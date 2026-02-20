@@ -41,64 +41,43 @@ body {
 }
 
 .wrapper {
-    display: flex;
     min-height: 100vh;
     overflow: visible;
 }
 
-/* ===== Timeline Sidebar ===== */
-.timeline {
-    width: 136px;
-    background: var(--bg-card);
-    border-right: 1px solid var(--border-color);
-    padding: 24px 16px;
-    overflow-y: auto;
-    flex-shrink: 0;
+/* ===== Month Selector Dropdown ===== */
+.month-selector {
+    margin-top: 16px;
 }
 
-.timeline h2 {
-    font-family: 'Outfit', sans-serif;
-    font-size: 13px;
+.month-selector select {
+    font-family: 'DM Sans', sans-serif;
+    font-size: 15px;
     font-weight: 600;
-    text-transform: uppercase;
-    letter-spacing: 0.08em;
-    color: var(--text-secondary);
-    margin-bottom: 16px;
-    padding-left: 12px;
-}
-
-.month {
-    padding: 12px 16px;
-    margin-bottom: 4px;
-    border-radius: 10px;
-    cursor: pointer;
-    font-weight: 500;
-    font-size: 14px;
     color: var(--text-primary);
+    background: var(--bg-card);
+    border: 2px solid var(--accent-blue);
+    border-radius: 10px;
+    padding: 10px 40px 10px 16px;
+    cursor: pointer;
+    appearance: none;
+    -webkit-appearance: none;
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='8' viewBox='0 0 12 8'%3E%3Cpath d='M1 1l5 5 5-5' stroke='%233b82f6' stroke-width='2' fill='none' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E");
+    background-repeat: no-repeat;
+    background-position: right 14px center;
     transition: all 0.2s ease;
-    position: relative;
+    box-shadow: 0 2px 8px -2px rgba(59, 130, 246, 0.15);
 }
 
-.month:hover {
-    background: #f1f5f9;
+.month-selector select:hover {
+    border-color: var(--accent-blue-dark);
+    box-shadow: 0 4px 12px -2px rgba(59, 130, 246, 0.25);
 }
 
-.month.active {
-    background: linear-gradient(135deg, var(--accent-blue) 0%, var(--accent-blue-dark) 100%);
-    color: #ffffff;
-    box-shadow: 0 4px 12px -2px rgba(59, 130, 246, 0.4);
-}
-
-.month.active::before {
-    content: '';
-    position: absolute;
-    left: -16px;
-    top: 50%;
-    transform: translateY(-50%);
-    width: 3px;
-    height: 24px;
-    background: var(--accent-blue);
-    border-radius: 0 2px 2px 0;
+.month-selector select:focus {
+    outline: none;
+    border-color: var(--accent-blue-dark);
+    box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.15);
 }
 
 /* ===== Main Content ===== */
@@ -206,14 +185,6 @@ h1 {
 .stat-value.neutral { color: var(--text-primary); }
 
 @media (max-width: 768px) {
-    .timeline {
-        width: 96px;
-        padding: 16px 10px;
-    }
-    .month {
-        padding: 8px 10px;
-        font-size: 13px;
-    }
     .content {
         padding: 20px 16px;
     }
@@ -234,17 +205,14 @@ h1 {
 
 <div class="wrapper">
 
-    <!-- ===== Timeline Sidebar ===== -->
-    <div class="timeline">
-        <h2>Select Month</h2>
-        <div id="timeline"></div>
-    </div>
-
     <!-- ===== Main Content ===== -->
     <div class="content">
         <div class="header">
             <h1>TTREB Market Listings Flow</h1>
             <p class="subtitle">Inventory changes shown as a waterfall chart (inflows → outflows)</p>
+            <div class="month-selector">
+                <select id="monthSelect" onchange="selectMonthFromDropdown(this.value)"></select>
+            </div>
         </div>
 
         <div class="legend">
@@ -332,15 +300,14 @@ const marketData = {
    BUILD TIMELINE
    ========================================================== */
 
-const timeline = document.getElementById("timeline");
+const monthSelect = document.getElementById("monthSelect");
 const months = Object.keys(marketData);
 
 months.forEach((month, index) => {
-    const div = document.createElement("div");
-    div.className = "month" + (index === 0 ? " active" : "");
-    div.textContent = month;
-    div.onclick = () => selectMonth(month, div);
-    timeline.appendChild(div);
+    const option = document.createElement("option");
+    option.value = month;
+    option.textContent = month;
+    monthSelect.appendChild(option);
 });
 
 /* ==========================================================
@@ -349,9 +316,7 @@ months.forEach((month, index) => {
 
 let chart;
 
-function selectMonth(month, el) {
-    document.querySelectorAll(".month").forEach(m => m.classList.remove("active"));
-    el.classList.add("active");
+function selectMonthFromDropdown(month) {
     renderChart(month);
 }
 
