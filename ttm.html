@@ -1,338 +1,205 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>TRREB Transaction Volume</title>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.min.js"></script>
-<style>
-@import url('https://fonts.googleapis.com/css2?family=Manrope:wght@300;400;500;600;700&display=swap');
-
-:root {
-  --nv: #162A3E;
-  --nv2: #1E3550;
-  --nv3: #E8EEF4;
-  --au: #C2A04E;
-  --au2: #A6873A;
-  --au4: #EDE0C0;
-  --c3: #4E6A82;
-  --c4: #7E97AC;
-  --c5: #9FB4C4;
-  --c7: #E0E8EF;
-  --bg: #F7F9FC;
-  --red: #C0392B;
-  --green: #2E7D5B;
-}
-
-* { margin: 0; padding: 0; box-sizing: border-box; }
-
-body {
-  background: var(--bg);
-  font-family: 'Manrope', sans-serif;
-  -webkit-font-smoothing: antialiased;
-}
-
-.top-accent { height: 5px; background: var(--au); }
-
-.header {
-  background: var(--nv);
-  padding: 20px 32px;
-  display: flex;
-  justify-content: center;
-  text-align: center;
-}
-.header-title {
-  color: #fff;
-  font-size: 16px;
-  font-weight: 700;
-  letter-spacing: 2px;
-}
-
-.chart-wrap {
-  max-width: 1200px;
-  margin: 32px auto;
-  padding: 0 24px;
-}
-
-.chart-card {
-  background: #fff;
-  border: 1px solid var(--c7);
-  padding: 28px 28px 20px;
-  position: relative;
-}
-
-.chart-card::before {
-  content: '';
-  position: absolute;
-  top: 0; left: 0; right: 0;
-  height: 3px;
-  background: linear-gradient(90deg, var(--au), var(--c7) 60%);
-}
-
-.chart-header {
-  display: flex;
-  justify-content: center;
-  text-align: center;
-  margin-bottom: 20px;
-}
-
-.chart-title {
-  font-size: 22px;
-  font-weight: 700;
-  color: var(--nv);
-  letter-spacing: -0.3px;
-}
-
-.chart-subtitle {
-  font-size: 11px;
-  color: var(--c4);
-  margin-top: 4px;
-}
-
-.legend {
-  display: flex;
-  gap: 16px;
-  align-items: center;
-  justify-content: center;
-  margin-top: 16px;
-  margin-bottom: 8px;
-}
-
-.legend-item {
-  display: flex;
-  align-items: center;
-  gap: 6px;
-  font-size: 11px;
-  font-weight: 600;
-  color: var(--nv2);
-  cursor: pointer;
-  padding: 5px 12px;
-  border-radius: 20px;
-  border: 1px solid var(--c7);
-  transition: all 0.2s;
-  user-select: none;
-}
-
-.legend-item:hover { background: var(--nv3); }
-.legend-item.inactive { opacity: 0.35; }
-
-.legend-dot {
-  width: 10px;
-  height: 10px;
-  border-radius: 50%;
-  flex-shrink: 0;
-}
-
-.chart-canvas-wrap {
-  position: relative;
-  height: 420px;
-}
-
-.chart-footer {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  margin-top: 16px;
-  padding-top: 12px;
-  border-top: 1px solid var(--c7);
-}
-
-.chart-footer-left {
-  font-size: 9px;
-  color: var(--c5);
-  letter-spacing: 2px;
-  text-transform: uppercase;
-}
-
-.chart-footer-right {
-  font-size: 9px;
-  color: var(--c5);
-  letter-spacing: 2px;
-  text-transform: uppercase;
-}
-
-@media print {
-  body { background: #fff; }
-  .chart-card { border: none; box-shadow: none; }
-  -webkit-print-color-adjust: exact;
-  print-color-adjust: exact;
-}
-</style>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Trailing Twelve Month Dollar Volume – 25 Years</title>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.min.js"></script>
+  <style>
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body {
+      font-family: 'Segoe UI', Arial, sans-serif;
+      background: #ffffff;
+      color: #7a6030;
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      padding: 36px 24px 48px;
+    }
+    .card {
+      background: #ffffff;
+      border: 1px solid #c9a84c;
+      border-radius: 14px;
+      padding: 36px 40px 32px;
+      width: 100%;
+      max-width: 1200px;
+      box-shadow: 0 8px 40px rgba(180,140,50,0.12);
+    }
+    .header {
+      margin-bottom: 8px;
+      text-align: center;
+    }
+    .title {
+      font-size: 22px;
+      font-weight: 700;
+      color: #b8962e;
+      letter-spacing: 0.3px;
+    }
+    .subtitle {
+      font-size: 13px;
+      color: #a07c2e;
+      margin-top: 4px;
+    }
+    .stats-row {
+      display: flex;
+      gap: 24px;
+      margin: 22px 0 28px;
+      flex-wrap: wrap;
+    }
+    .stat {
+      background: #0d1117;
+      border: 1px solid #30363d;
+      border-radius: 8px;
+      padding: 12px 20px;
+      min-width: 160px;
+    }
+    .stat-label {
+      font-size: 11px;
+      text-transform: uppercase;
+      letter-spacing: 0.8px;
+      color: #8b949e;
+      margin-bottom: 4px;
+    }
+    .stat-value {
+      font-size: 20px;
+      font-weight: 700;
+      color: #58a6ff;
+    }
+    .stat-value.peak { color: #3fb950; }
+    .stat-value.trough { color: #f85149; }
+    .chart-container {
+      position: relative;
+      height: 460px;
+      width: 100%;
+    }
+    .source {
+      margin-top: 18px;
+      font-size: 11px;
+      color: #a07c2e;
+      text-align: right;
+    }
+  </style>
 </head>
 <body>
+  <div class="card">
+    <div class="header">
+      <div class="title">Trailing Twelve Month Dollar Volume for 25 Years</div>
+      <div class="subtitle">January 2001 – January 2026 &nbsp;|&nbsp; Toronto Regional Real Estate Board (TRREB) &nbsp;|&nbsp; Values in $Millions CAD</div>
+    </div>
 
-<div class="top-accent"></div>
+    <div class="chart-container">
+      <canvas id="volChart"></canvas>
+    </div>
 
-<div class="header">
-  <div>
-    <div class="header-title">TRREB Transaction Volume</div>
   </div>
-</div>
 
-<div class="chart-wrap">
-  <div class="chart-card">
-    <div class="chart-header">
-      <div>
-        <div class="chart-title">TRREB Twelve Month Average Volume (Billion Dollars)</div>
-      </div>
-    </div>
-    <div class="chart-canvas-wrap">
-      <canvas id="volumeChart"></canvas>
-    </div>
-    <div class="legend" id="legend"></div>
-    <div class="chart-footer">
-      <div class="chart-footer-left">RE/MAX Realtron Realty Inc., Brokerage</div>
-      <div class="chart-footer-right">Peter Luo · SRS · MCNE</div>
-    </div>
-  </div>
-</div>
+  <script>
+    const rawData = [{"year":2001,"month":1,"volume":1192.1},{"year":2001,"month":2,"volume":1195.47},{"year":2001,"month":3,"volume":1201.06},{"year":2001,"month":4,"volume":1205.73},{"year":2001,"month":5,"volume":1243.79},{"year":2001,"month":6,"volume":1279.67},{"year":2001,"month":7,"volume":1307.49},{"year":2001,"month":8,"volume":1332.9},{"year":2001,"month":9,"volume":1335.01},{"year":2001,"month":10,"volume":1352.22},{"year":2001,"month":11,"volume":1375.91},{"year":2001,"month":12,"volume":1417.08},{"year":2002,"month":1,"volume":1462.85},{"year":2002,"month":2,"volume":1517.83},{"year":2002,"month":3,"volume":1560.87},{"year":2002,"month":4,"volume":1621.93},{"year":2002,"month":5,"volume":1649.11},{"year":2002,"month":6,"volume":1648.26},{"year":2002,"month":7,"volume":1658.69},{"year":2002,"month":8,"volume":1658.31},{"year":2002,"month":9,"volume":1693.33},{"year":2002,"month":10,"volume":1730.62},{"year":2002,"month":11,"volume":1738.48},{"year":2002,"month":12,"volume":1719.3},{"year":2003,"month":1,"volume":1715.84},{"year":2003,"month":2,"volume":1704.98},{"year":2003,"month":3,"volume":1699.78},{"year":2003,"month":4,"volume":1688.76},{"year":2003,"month":5,"volume":1701.83},{"year":2003,"month":6,"volume":1745.43},{"year":2003,"month":7,"volume":1809.26},{"year":2003,"month":8,"volume":1844.83},{"year":2003,"month":9,"volume":1874.39},{"year":2003,"month":10,"volume":1907.49},{"year":2003,"month":11,"volume":1922.79},{"year":2003,"month":12,"volume":1940.14},{"year":2004,"month":1,"volume":1941.9},{"year":2004,"month":2,"volume":1954.42},{"year":2004,"month":3,"volume":2017.8},{"year":2004,"month":4,"volume":2084.81},{"year":2004,"month":5,"volume":2134.58},{"year":2004,"month":6,"volume":2181.7},{"year":2004,"month":7,"volume":2177.23},{"year":2004,"month":8,"volume":2192.6},{"year":2004,"month":9,"volume":2201.47},{"year":2004,"month":10,"volume":2197.98},{"year":2004,"month":11,"volume":2218.43},{"year":2004,"month":12,"volume":2230.2},{"year":2005,"month":1,"volume":2237.06},{"year":2005,"month":2,"volume":2252.31},{"year":2005,"month":3,"volume":2237.71},{"year":2005,"month":4,"volume":2244.22},{"year":2005,"month":5,"volume":2260.74},{"year":2005,"month":6,"volume":2279.31},{"year":2005,"month":7,"volume":2289.2},{"year":2005,"month":8,"volume":2320.07},{"year":2005,"month":9,"volume":2350.4},{"year":2005,"month":10,"volume":2375.03},{"year":2005,"month":11,"volume":2396.57},{"year":2005,"month":12,"volume":2401.24},{"year":2006,"month":1,"volume":2416.57},{"year":2006,"month":2,"volume":2443.93},{"year":2006,"month":3,"volume":2482.44},{"year":2006,"month":4,"volume":2486.14},{"year":2006,"month":5,"volume":2507.62},{"year":2006,"month":6,"volume":2504.89},{"year":2006,"month":7,"volume":2506.05},{"year":2006,"month":8,"volume":2500.67},{"year":2006,"month":9,"volume":2486.83},{"year":2006,"month":10,"volume":2486.33},{"year":2006,"month":11,"volume":2483.57},{"year":2006,"month":12,"volume":2492.14},{"year":2007,"month":1,"volume":2517.45},{"year":2007,"month":2,"volume":2526.25},{"year":2007,"month":3,"volume":2529.32},{"year":2007,"month":4,"volume":2572.37},{"year":2007,"month":5,"volume":2640.55},{"year":2007,"month":6,"volume":2712.73},{"year":2007,"month":7,"volume":2782.7},{"year":2007,"month":8,"volume":2829.14},{"year":2007,"month":9,"volume":2853.97},{"year":2007,"month":10,"volume":2910.04},{"year":2007,"month":11,"volume":2963.8},{"year":2007,"month":12,"volume":2992.11},{"year":2008,"month":1,"volume":2997.99},{"year":2008,"month":2,"volume":2981.43},{"year":2008,"month":3,"volume":2932.3},{"year":2008,"month":4,"volume":2924.87},{"year":2008,"month":5,"volume":2881.57},{"year":2008,"month":6,"volume":2832.62},{"year":2008,"month":7,"volume":2802.4},{"year":2008,"month":8,"volume":2751.48},{"year":2008,"month":9,"volume":2731.27},{"year":2008,"month":10,"volume":2622.6},{"year":2008,"month":11,"volume":2494.45},{"year":2008,"month":12,"volume":2419.16},{"year":2009,"month":1,"volume":2337.26},{"year":2009,"month":2,"volume":2269.81},{"year":2009,"month":3,"volume":2245.82},{"year":2009,"month":4,"volume":2215.25},{"year":2009,"month":5,"volume":2219.12},{"year":2009,"month":6,"volume":2304.21},{"year":2009,"month":7,"volume":2391.02},{"year":2009,"month":8,"volume":2458.66},{"year":2009,"month":9,"volume":2539.26},{"year":2009,"month":10,"volume":2686.8},{"year":2009,"month":11,"volume":2834.65},{"year":2009,"month":12,"volume":2947.24},{"year":2010,"month":1,"volume":3040.75},{"year":2010,"month":2,"volume":3178.88},{"year":2010,"month":3,"volume":3370.52},{"year":2010,"month":4,"volume":3507.4},{"year":2010,"month":5,"volume":3543.71},{"year":2010,"month":6,"volume":3480.97},{"year":2010,"month":7,"volume":3382.54},{"year":2010,"month":8,"volume":3336.25},{"year":2010,"month":9,"volume":3283.06},{"year":2010,"month":10,"volume":3230.93},{"year":2010,"month":11,"volume":3208.91},{"year":2010,"month":12,"volume":3177.63},{"year":2011,"month":1,"volume":3156.65},{"year":2011,"month":2,"volume":3123.33},{"year":2011,"month":3,"volume":3087.21},{"year":2011,"month":4,"volume":3038.58},{"year":2011,"month":5,"volume":3081.15},{"year":2011,"month":6,"volume":3168.67},{"year":2011,"month":7,"volume":3232.31},{"year":2011,"month":8,"volume":3293.93},{"year":2011,"month":9,"volume":3356.16},{"year":2011,"month":10,"volume":3402.55},{"year":2011,"month":11,"volume":3439.85},{"year":2011,"month":12,"volume":3452.68},{"year":2012,"month":1,"volume":3479.78},{"year":2012,"month":2,"volume":3545.4},{"year":2012,"month":3,"volume":3608.74},{"year":2012,"month":4,"volume":3690.79},{"year":2012,"month":5,"volume":3747.99},{"year":2012,"month":6,"volume":3740.57},{"year":2012,"month":7,"volume":3737.74},{"year":2012,"month":8,"volume":3711.46},{"year":2012,"month":9,"volume":3662.67},{"year":2012,"month":10,"volume":3651.14},{"year":2012,"month":11,"volume":3606.48},{"year":2012,"month":12,"volume":3581.92},{"year":2013,"month":1,"volume":3575.75},{"year":2013,"month":2,"volume":3519.66},{"year":2013,"month":3,"volume":3439.44},{"year":2013,"month":4,"volume":3425.71},{"year":2013,"month":5,"volume":3421.51},{"year":2013,"month":6,"volume":3424.68},{"year":2013,"month":7,"volume":3491.06},{"year":2013,"month":8,"volume":3551.25},{"year":2013,"month":9,"volume":3635.13},{"year":2013,"month":10,"volume":3710.1},{"year":2013,"month":11,"volume":3764.88},{"year":2013,"month":12,"volume":3793.58},{"year":2014,"month":1,"volume":3803.85},{"year":2014,"month":2,"volume":3827.89},{"year":2014,"month":3,"volume":3877.46},{"year":2014,"month":4,"volume":3925.99},{"year":2014,"month":5,"volume":4014.97},{"year":2014,"month":6,"volume":4106.44},{"year":2014,"month":7,"volume":4169.46},{"year":2014,"month":8,"volume":4205.38},{"year":2014,"month":9,"volume":4266.55},{"year":2014,"month":10,"volume":4327.41},{"year":2014,"month":11,"volume":4355.54},{"year":2014,"month":12,"volume":4385.85},{"year":2015,"month":1,"volume":4404.63},{"year":2015,"month":2,"volume":4454.98},{"year":2015,"month":3,"volume":4535.1},{"year":2015,"month":4,"volume":4666.02},{"year":2015,"month":5,"volume":4759.19},{"year":2015,"month":6,"volume":4912.67},{"year":2015,"month":7,"volume":4990.36},{"year":2015,"month":8,"volume":5044.94},{"year":2015,"month":9,"volume":5088.02},{"year":2015,"month":10,"volume":5130.32},{"year":2015,"month":11,"volume":5204.03},{"year":2015,"month":12,"volume":5247.23},{"year":2016,"month":1,"volume":5291.94},{"year":2016,"month":2,"volume":5412.5},{"year":2016,"month":3,"volume":5546.22},{"year":2016,"month":4,"volume":5690.48},{"year":2016,"month":5,"volume":5862.36},{"year":2016,"month":6,"volume":6020.52},{"year":2016,"month":7,"volume":6110.82},{"year":2016,"month":8,"volume":6289.05},{"year":2016,"month":9,"volume":6482.59},{"year":2016,"month":10,"volume":6640.57},{"year":2016,"month":11,"volume":6806.0},{"year":2016,"month":12,"volume":6881.52},{"year":2017,"month":1,"volume":6967.88},{"year":2017,"month":2,"volume":7115.51},{"year":2017,"month":3,"volume":7438.77},{"year":2017,"month":4,"volume":7574.99},{"year":2017,"month":5,"volume":7496.15},{"year":2017,"month":6,"volume":7224.64},{"year":2017,"month":7,"volume":7001.14},{"year":2017,"month":8,"volume":6807.54},{"year":2017,"month":9,"volume":6596.53},{"year":2017,"month":10,"volume":6438.24},{"year":2017,"month":11,"volume":6350.76},{"year":2017,"month":12,"volume":6324.42},{"year":2018,"month":1,"volume":6238.87},{"year":2018,"month":2,"volume":5987.37},{"year":2018,"month":3,"volume":5545.78},{"year":2018,"month":4,"volume":5188.19},{"year":2018,"month":5,"volume":4981.75},{"year":2018,"month":6,"volume":5001.35},{"year":2018,"month":7,"volume":5087.37},{"year":2018,"month":8,"volume":5136.93},{"year":2018,"month":9,"volume":5154.24},{"year":2018,"month":10,"volume":5197.05},{"year":2018,"month":11,"volume":5142.02},{"year":2018,"month":12,"volume":5079.79},{"year":2019,"month":1,"volume":5082.36},{"year":2019,"month":2,"volume":5076.66},{"year":2019,"month":3,"volume":5075.15},{"year":2019,"month":4,"volume":5171.32},{"year":2019,"month":5,"volume":5349.61},{"year":2019,"month":6,"volume":5420.97},{"year":2019,"month":7,"volume":5545.55},{"year":2019,"month":8,"volume":5618.9},{"year":2019,"month":9,"volume":5739.69},{"year":2019,"month":10,"volume":5836.5},{"year":2019,"month":11,"volume":5922.42},{"year":2019,"month":12,"volume":5991.04},{"year":2020,"month":1,"volume":6061.47},{"year":2020,"month":2,"volume":6283.28},{"year":2020,"month":3,"volume":6412.59},{"year":2020,"month":4,"volume":5999.15},{"year":2020,"month":5,"volume":5634.69},{"year":2020,"month":6,"volume":5693.92},{"year":2020,"month":7,"volume":5986.4},{"year":2020,"month":8,"volume":6331.01},{"year":2020,"month":9,"volume":6668.01},{"year":2020,"month":10,"volume":6917.69},{"year":2020,"month":11,"volume":7119.03},{"year":2020,"month":12,"volume":7371.82},{"year":2021,"month":1,"volume":7608.73},{"year":2021,"month":2,"volume":8014.47},{"year":2021,"month":3,"volume":8845.74},{"year":2021,"month":4,"volume":9880.54},{"year":2021,"month":5,"volume":10649.04},{"year":2021,"month":6,"volume":10980.94},{"year":2021,"month":7,"volume":10939.3},{"year":2021,"month":8,"volume":10850.16},{"year":2021,"month":9,"volume":10818.47},{"year":2021,"month":10,"volume":10907.71},{"year":2021,"month":11,"volume":11080.54},{"year":2021,"month":12,"volume":11102.93},{"year":2022,"month":1,"volume":11127.48},{"year":2022,"month":2,"volume":11179.83},{"year":2022,"month":3,"volume":10926.58},{"year":2022,"month":4,"volume":10517.27},{"year":2022,"month":5,"volume":10147.53},{"year":2022,"month":6,"volume":9757.93},{"year":2022,"month":7,"volume":9367.46},{"year":2022,"month":8,"volume":9108.03},{"year":2022,"month":9,"volume":8709.25},{"year":2022,"month":10,"volume":8219.73},{"year":2022,"month":11,"volume":7757.57},{"year":2022,"month":12,"volume":7450.45},{"year":2023,"month":1,"volume":7137.84},{"year":2023,"month":2,"volume":6568.44},{"year":2023,"month":3,"volume":6026.22},{"year":2023,"month":4,"volume":5917.62},{"year":2023,"month":5,"volume":6080.65},{"year":2023,"month":6,"volume":6198.41},{"year":2023,"month":7,"volume":6248.52},{"year":2023,"month":8,"volume":6219.31},{"year":2023,"month":9,"volume":6194.98},{"year":2023,"month":10,"volume":6177.9},{"year":2023,"month":11,"volume":6146.89},{"year":2023,"month":12,"volume":6182.9},{"year":2024,"month":1,"volume":6273.42},{"year":2024,"month":2,"volume":6353.48},{"year":2024,"month":3,"volume":6328.95},{"year":2024,"month":4,"volume":6312.82},{"year":2024,"month":5,"volume":6121.62},{"year":2024,"month":6,"volume":5988.18},{"year":2024,"month":7,"volume":5996.8},{"year":2024,"month":8,"volume":5980.27},{"year":2024,"month":9,"volume":6009.36},{"year":2024,"month":10,"volume":6219.75},{"year":2024,"month":11,"volume":6383.84},{"year":2024,"month":12,"volume":6373.5},{"year":2025,"month":1,"volume":6350.36},{"year":2025,"month":2,"volume":6200.9},{"year":2025,"month":3,"volume":6048.45},{"year":2025,"month":4,"volume":5862.41},{"year":2025,"month":5,"volume":5744.46},{"year":2025,"month":6,"volume":5719.92},{"year":2025,"month":7,"volume":5760.13},{"year":2025,"month":8,"volume":5746.68},{"year":2025,"month":9,"volume":5782.15},{"year":2025,"month":10,"volume":5679.41},{"year":2025,"month":11,"volume":5572.57},{"year":2025,"month":12,"volume":5584.01},{"year":2026,"month":1,"volume":5500.25}];
 
-<script>
-const rawData = {"labels": ["2000", "", "", "", "", "", "", "", "", "", "", "", "2001", "", "", "", "", "", "", "", "", "", "", "", "2002", "", "", "", "", "", "", "", "", "", "", "", "2003", "", "", "", "", "", "", "", "", "", "", "", "2004", "", "", "", "", "", "", "", "", "", "", "", "2005", "", "", "", "", "", "", "", "", "", "", "", "2006", "", "", "", "", "", "", "", "", "", "", "", "2007", "", "", "", "", "", "", "", "", "", "", "", "2008", "", "", "", "", "", "", "", "", "", "", "", "2009", "", "", "", "", "", "", "", "", "", "", "", "2010", "", "", "", "", "", "", "", "", "", "", "", "2011", "", "", "", "", "", "", "", "", "", "", "", "2012", "", "", "", "", "", "", "", "", "", "", "", "2013", "", "", "", "", "", "", "", "", "", "", "", "2014", "", "", "", "", "", "", "", "", "", "", "", "2015", "", "", "", "", "", "", "", "", "", "", "", "2016", "", "", "", "", "", "", "", "", "", "", "", "2017", "", "", "", "", "", "", "", "", "", "", "", "2018", "", "", "", "", "", "", "", "", "", "", "", "2019", "", "", "", "", "", "", "", "", "", "", "", "2020", "", "", "", "", "", "", "", "", "", "", "", "2021", "", "", "", "", "", "", "", "", "", "", "", "2022", "", "", "", "", "", "", "", "", "", "", "", "2023", "", "", "", "", "", "", "", "", "", "", "", "2024", "", "", "", "", "", "", "", "", "", "", "", "2025", "", "", "", "", "", "", "", "", "", "", "", "2026"], "colC": [1.13, 1.15, 1.16, 1.16, 1.16, 1.15, 1.15, 1.15, 1.16, 1.17, 1.19, 1.18, 1.19, 1.2, 1.2, 1.21, 1.24, 1.28, 1.31, 1.33, 1.34, 1.35, 1.38, 1.42, 1.46, 1.52, 1.56, 1.62, 1.65, 1.65, 1.66, 1.66, 1.69, 1.73, 1.74, 1.72, 1.72, 1.7, 1.7, 1.69, 1.7, 1.75, 1.81, 1.84, 1.87, 1.91, 1.92, 1.94, 1.94, 1.95, 2.02, 2.08, 2.13, 2.18, 2.18, 2.19, 2.2, 2.2, 2.22, 2.23, 2.24, 2.25, 2.24, 2.24, 2.26, 2.28, 2.29, 2.32, 2.35, 2.38, 2.4, 2.4, 2.42, 2.44, 2.48, 2.49, 2.51, 2.5, 2.51, 2.5, 2.49, 2.49, 2.48, 2.49, 2.52, 2.53, 2.53, 2.57, 2.64, 2.71, 2.78, 2.83, 2.85, 2.91, 2.96, 2.99, 3.0, 2.98, 2.93, 2.92, 2.88, 2.83, 2.8, 2.75, 2.73, 2.62, 2.49, 2.42, 2.34, 2.27, 2.25, 2.22, 2.22, 2.3, 2.39, 2.46, 2.54, 2.69, 2.83, 2.95, 3.04, 3.18, 3.37, 3.51, 3.54, 3.48, 3.38, 3.34, 3.28, 3.23, 3.21, 3.18, 3.16, 3.12, 3.09, 3.04, 3.08, 3.17, 3.23, 3.29, 3.36, 3.4, 3.44, 3.45, 3.48, 3.55, 3.61, 3.69, 3.75, 3.74, 3.74, 3.71, 3.66, 3.65, 3.61, 3.58, 3.58, 3.52, 3.44, 3.43, 3.42, 3.42, 3.49, 3.55, 3.64, 3.71, 3.76, 3.79, 3.8, 3.83, 3.88, 3.93, 4.01, 4.11, 4.17, 4.21, 4.27, 4.33, 4.36, 4.39, 4.4, 4.45, 4.54, 4.67, 4.76, 4.91, 4.99, 5.04, 5.09, 5.13, 5.2, 5.25, 5.29, 5.41, 5.55, 5.69, 5.86, 6.02, 6.11, 6.29, 6.48, 6.64, 6.81, 6.88, 6.97, 7.12, 7.44, 7.57, 7.5, 7.22, 7.0, 6.81, 6.6, 6.44, 6.35, 6.32, 6.24, 5.99, 5.55, 5.19, 4.98, 5.0, 5.09, 5.14, 5.15, 5.2, 5.14, 5.08, 5.08, 5.08, 5.08, 5.17, 5.35, 5.42, 5.55, 5.62, 5.74, 5.84, 5.92, 5.99, 6.06, 6.28, 6.41, 6.0, 5.63, 5.69, 5.99, 6.33, 6.67, 6.92, 7.12, 7.37, 7.61, 8.01, 8.85, 9.88, 10.65, 10.98, 10.94, 10.85, 10.82, 10.91, 11.08, 11.1, 11.13, 11.18, 10.93, 10.52, 10.15, 9.76, 9.37, 9.11, 8.71, 8.22, 7.76, 7.45, 7.14, 6.57, 6.03, 5.92, 6.08, 6.2, 6.25, 6.22, 6.19, 6.18, 6.15, 6.18, 6.27, 6.35, 6.33, 6.31, 6.12, 5.99, 6.0, 5.98, 6.01, 6.22, 6.38, 6.37, 6.35, 6.2, 6.05, 5.86, 5.74, 5.72, 5.76, 5.75, 5.78, 5.68, 5.57, 5.58, 5.5], "colF": [1.13, 1.14, 1.14, 1.15, 1.16, 1.16, 1.17, 1.18, 1.19, 1.19, 1.2, 1.21, 1.21, 1.22, 1.23, 1.24, 1.24, 1.25, 1.26, 1.27, 1.27, 1.28, 1.29, 1.3, 1.3, 1.31, 1.32, 1.33, 1.33, 1.34, 1.35, 1.36, 1.37, 1.37, 1.38, 1.39, 1.4, 1.41, 1.42, 1.42, 1.43, 1.44, 1.45, 1.46, 1.47, 1.48, 1.49, 1.49, 1.5, 1.51, 1.52, 1.53, 1.54, 1.55, 1.56, 1.57, 1.58, 1.59, 1.59, 1.6, 1.61, 1.62, 1.63, 1.64, 1.65, 1.66, 1.67, 1.68, 1.69, 1.7, 1.71, 1.72, 1.73, 1.74, 1.75, 1.76, 1.77, 1.78, 1.8, 1.81, 1.82, 1.83, 1.84, 1.85, 1.86, 1.87, 1.88, 1.89, 1.91, 1.92, 1.93, 1.94, 1.95, 1.96, 1.97, 1.99, 2.0, 2.01, 2.02, 2.03, 2.05, 2.06, 2.07, 2.08, 2.09, 2.11, 2.12, 2.13, 2.15, 2.16, 2.17, 2.18, 2.2, 2.21, 2.22, 2.24, 2.25, 2.26, 2.28, 2.29, 2.3, 2.32, 2.33, 2.34, 2.36, 2.37, 2.39, 2.4, 2.42, 2.43, 2.44, 2.46, 2.47, 2.49, 2.5, 2.52, 2.53, 2.55, 2.56, 2.58, 2.59, 2.61, 2.62, 2.64, 2.66, 2.67, 2.69, 2.7, 2.72, 2.74, 2.75, 2.77, 2.79, 2.8, 2.82, 2.84, 2.85, 2.87, 2.89, 2.9, 2.92, 2.94, 2.96, 2.97, 2.99, 3.01, 3.03, 3.04, 3.06, 3.08, 3.1, 3.12, 3.14, 3.15, 3.17, 3.19, 3.21, 3.23, 3.25, 3.27, 3.29, 3.31, 3.33, 3.35, 3.37, 3.39, 3.41, 3.43, 3.45, 3.47, 3.49, 3.51, 3.53, 3.55, 3.57, 3.59, 3.62, 3.64, 3.66, 3.68, 3.7, 3.72, 3.75, 3.77, 3.79, 3.81, 3.84, 3.86, 3.88, 3.91, 3.93, 3.95, 3.98, 4.0, 4.02, 4.05, 4.07, 4.1, 4.12, 4.14, 4.17, 4.19, 4.22, 4.24, 4.27, 4.29, 4.32, 4.35, 4.37, 4.4, 4.42, 4.45, 4.48, 4.5, 4.53, 4.56, 4.58, 4.61, 4.64, 4.67, 4.69, 4.72, 4.75, 4.78, 4.81, 4.84, 4.86, 4.89, 4.92, 4.95, 4.98, 5.01, 5.04, 5.07, 5.1, 5.13, 5.16, 5.19, 5.22, 5.25, 5.29, 5.32, 5.35, 5.38, 5.41, 5.44, 5.48, 5.51, 5.54, 5.58, 5.61, 5.64, 5.68, 5.71, 5.74, 5.78, 5.81, 5.85, 5.88, 5.92, 5.95, 5.99, 6.02, 6.06, 6.09, 6.13, 6.17, 6.2, 6.24, 6.28, 6.32, 6.35, 6.39, 6.43, 6.47, 6.51, 6.54, 6.58, 6.62, 6.66, 6.7, 6.74, 6.78, 6.82, 6.86, 6.9, 6.94, 6.99, 7.03, 7.07, 7.11, 7.15, 7.2], "colG": [1.13, 1.14, 1.15, 1.16, 1.17, 1.18, 1.19, 1.2, 1.21, 1.22, 1.23, 1.24, 1.26, 1.27, 1.28, 1.29, 1.3, 1.31, 1.32, 1.34, 1.35, 1.36, 1.37, 1.38, 1.39, 1.41, 1.42, 1.43, 1.44, 1.46, 1.47, 1.48, 1.5, 1.51, 1.52, 1.54, 1.55, 1.56, 1.58, 1.59, 1.6, 1.62, 1.63, 1.65, 1.66, 1.68, 1.69, 1.71, 1.72, 1.74, 1.75, 1.77, 1.78, 1.8, 1.81, 1.83, 1.85, 1.86, 1.88, 1.9, 1.91, 1.93, 1.95, 1.96, 1.98, 2.0, 2.02, 2.03, 2.05, 2.07, 2.09, 2.11, 2.12, 2.14, 2.16, 2.18, 2.2, 2.22, 2.24, 2.26, 2.28, 2.3, 2.32, 2.34, 2.36, 2.38, 2.4, 2.42, 2.44, 2.47, 2.49, 2.51, 2.53, 2.55, 2.58, 2.6, 2.62, 2.64, 2.67, 2.69, 2.71, 2.74, 2.76, 2.79, 2.81, 2.84, 2.86, 2.89, 2.91, 2.94, 2.96, 2.99, 3.02, 3.04, 3.07, 3.1, 3.12, 3.15, 3.18, 3.21, 3.23, 3.26, 3.29, 3.32, 3.35, 3.38, 3.41, 3.44, 3.47, 3.5, 3.53, 3.56, 3.59, 3.62, 3.66, 3.69, 3.72, 3.75, 3.79, 3.82, 3.85, 3.89, 3.92, 3.96, 3.99, 4.03, 4.06, 4.1, 4.13, 4.17, 4.21, 4.24, 4.28, 4.32, 4.36, 4.4, 4.43, 4.47, 4.51, 4.55, 4.59, 4.63, 4.67, 4.71, 4.76, 4.8, 4.84, 4.88, 4.93, 4.97, 5.01, 5.06, 5.1, 5.15, 5.19, 5.24, 5.28, 5.33, 5.38, 5.42, 5.47, 5.52, 5.57, 5.62, 5.67, 5.72, 5.77, 5.82, 5.87, 5.92, 5.97, 6.03, 6.08, 6.13, 6.19, 6.24, 6.3, 6.35, 6.41, 6.46, 6.52, 6.58, 6.64, 6.69, 6.75, 6.81, 6.87, 6.93, 6.99, 7.05, 7.12, 7.18, 7.24, 7.31, 7.37, 7.44, 7.5, 7.57, 7.63, 7.7, 7.77, 7.84, 7.91, 7.98, 8.05, 8.12, 8.19, 8.26, 8.33, 8.41, 8.48, 8.55, 8.63, 8.71, 8.78, 8.86, 8.94, 9.02, 9.1, 9.18, 9.26, 9.34, 9.42, 9.5, 9.59, 9.67, 9.76, 9.84, 9.93, 10.02, 10.1, 10.19, 10.28, 10.37, 10.46, 10.56, 10.65, 10.74, 10.84, 10.93, 11.03, 11.13, 11.22, 11.32, 11.42, 11.52, 11.62, 11.73, 11.83, 11.93, 12.04, 12.15, 12.25, 12.36, 12.47, 12.58, 12.69, 12.8, 12.91, 13.03, 13.14, 13.26, 13.37, 13.49, 13.61, 13.73, 13.85, 13.97, 14.1, 14.22, 14.34, 14.47, 14.6, 14.73, 14.86, 14.99, 15.12, 15.25, 15.39, 15.52, 15.66, 15.8, 15.94, 16.08, 16.22, 16.36, 16.5, 16.65, 16.8, 16.94, 17.09, 17.24, 17.39]};
+    const monthNames = ['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'];
 
-const GOLD = '#C2A04E';
-const RED  = '#C0392B';
-const GREEN = '#2E7D5B';
-const NAVY = '#162A3E';
-const GRID = '#E0E8EF';
+    const labels = rawData.map(d => {
+      if (d.month === 1) return `Jan ${d.year}`;
+      if (d.month === 7) return `Jul ${d.year}`;
+      return '';
+    });
 
-const datasets = [
-  {
-    label: '12 Month Average Volume',
-    data: rawData.colC,
-    borderColor: GOLD,
-    backgroundColor: GOLD + '18',
-    borderWidth: 2.2,
-    pointRadius: 0,
-    pointHoverRadius: 5,
-    pointHoverBackgroundColor: GOLD,
-    tension: 0.3,
-    fill: false,
-    spanGaps: true,
-  },
-  {
-    label: 'Lower Trend Line',
-    data: rawData.colF,
-    borderColor: GREEN,
-    backgroundColor: GREEN + '18',
-    borderWidth: 2.2,
-    pointRadius: 0,
-    pointHoverRadius: 5,
-    pointHoverBackgroundColor: GREEN,
-    tension: 0.3,
-    fill: false,
-    spanGaps: true,
-  },
-  {
-    label: 'Upper Trend Line',
-    data: rawData.colG,
-    borderColor: RED,
-    backgroundColor: RED + '18',
-    borderWidth: 2.2,
-    pointRadius: 0,
-    pointHoverRadius: 5,
-    pointHoverBackgroundColor: RED,
-    tension: 0.3,
-    fill: false,
-    spanGaps: true,
-  },
-];
+    const fullLabels = rawData.map(d => `${monthNames[d.month-1]} ${d.year}`);
+    const values = rawData.map(d => d.volume);
 
-const ctx = document.getElementById('volumeChart').getContext('2d');
+    // Gradient fill
+    const ctx = document.getElementById('volChart').getContext('2d');
 
-const chart = new Chart(ctx, {
-  type: 'line',
-  data: {
-    labels: rawData.labels,
-    datasets: datasets,
-  },
-  options: {
-    responsive: true,
-    maintainAspectRatio: false,
-    interaction: {
-      mode: 'index',
-      intersect: false,
-    },
-    plugins: {
-      legend: { display: false },
-      tooltip: {
-        backgroundColor: NAVY,
-        titleFont: { family: 'Manrope', size: 12, weight: '600' },
-        bodyFont: { family: 'Manrope', size: 11 },
-        padding: 12,
-        cornerRadius: 4,
-        displayColors: true,
-        boxPadding: 4,
-        callbacks: {
-          title: function(items) {
-            const idx = items[0].dataIndex;
-            let yr = '';
-            for (let i = idx; i >= 0; i--) {
-              if (rawData.labels[i] && rawData.labels[i].length === 4) {
-                yr = rawData.labels[i];
-                break;
-              }
+    const gradient = ctx.createLinearGradient(0, 0, 0, 460);
+    gradient.addColorStop(0, 'rgba(184,150,46,0.30)');
+    gradient.addColorStop(0.6, 'rgba(184,150,46,0.07)');
+    gradient.addColorStop(1, 'rgba(184,150,46,0.01)');
+
+    // Color line segments by trend
+    const pointColors = values.map((v, i) => {
+      if (i === 0) return '#58a6ff';
+      return v >= values[i-1] ? '#3fb950' : '#f85149';
+    });
+
+    new Chart(ctx, {
+      type: 'line',
+      data: {
+        labels: fullLabels,
+        datasets: [{
+          label: 'TTM Dollar Volume ($M)',
+          data: values,
+          borderColor: '#b8962e',
+          backgroundColor: gradient,
+          borderWidth: 2,
+          pointRadius: 0,
+          pointHoverRadius: 5,
+          pointHoverBackgroundColor: '#b8962e',
+          pointHoverBorderColor: '#fff',
+          pointHoverBorderWidth: 2,
+          fill: true,
+          tension: 0.3
+        }]
+      },
+      options: {
+        responsive: true,
+        maintainAspectRatio: false,
+        interaction: {
+          mode: 'index',
+          intersect: false
+        },
+        plugins: {
+          legend: { display: false },
+          tooltip: {
+            backgroundColor: '#fdf8ec',
+            borderColor: '#c9a84c',
+            borderWidth: 1,
+            titleColor: '#a07c2e',
+            bodyColor: '#7a6030',
+            padding: 12,
+            callbacks: {
+              title: ctx => ctx[0].label,
+              label: ctx => ` TTM Volume: $${ctx.parsed.y.toLocaleString('en-CA', {minimumFractionDigits:2, maximumFractionDigits:2})}M`
             }
-            const monthNum = idx - rawData.labels.indexOf(yr);
-            const months = ['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'];
-            const mo = months[monthNum % 12] || '';
-            return mo + ' ' + yr;
           },
-          label: function(ctx) {
-            const val = ctx.parsed.y;
-            if (val == null) return '';
-            return ' ' + ctx.dataset.label + ': $' + val.toFixed(2) + 'B';
+          annotation: {}
+        },
+        scales: {
+          x: {
+            grid: { color: 'rgba(201,168,76,0.2)', drawTicks: false },
+            ticks: {
+              color: '#a07c2e',
+              font: { size: 11 },
+              maxRotation: 60,
+              minRotation: 60,
+              autoSkip: false,
+              callback: function(val, index) {
+                const d = rawData[index];
+                if (d.month === 1) return `${d.year}`;
+                return '';
+              }
+            },
+            border: { color: '#c9a84c' }
+          },
+          y: {
+            position: 'left',
+            grid: { color: 'rgba(201,168,76,0.2)', drawTicks: false },
+            ticks: {
+              color: '#a07c2e',
+              font: { size: 11 },
+              callback: v => `$${(v/1000).toFixed(0)}B`
+            },
+            border: { color: '#c9a84c', dash: [4,4] },
+            title: {
+              display: true,
+              text: 'TTM Dollar Volume ($M)',
+              color: '#c9a84c',
+              font: { size: 11 }
+            }
           }
         }
       }
-    },
-    scales: {
-      x: {
-        grid: { color: GRID, lineWidth: 0.5 },
-        ticks: {
-          color: NAVY,
-          font: { family: 'Manrope', size: 10 },
-          maxRotation: 45,
-          autoSkip: true,
-          autoSkipPadding: 20,
-          callback: function(value, index) {
-            const label = rawData.labels[index];
-            return (label && label.length === 4) ? label : null;
-          }
-        },
-        border: { color: GRID }
-      },
-      y: {
-        grid: { color: GRID, lineWidth: 0.5 },
-        ticks: {
-          color: NAVY,
-          font: { family: 'Manrope', size: 10 },
-          callback: function(value) {
-            return '$' + value.toFixed(0) + 'B';
-          }
-        },
-        border: { color: GRID }
-      }
-    }
-  }
-});
-
-// Custom legend with toggle
-const legendEl = document.getElementById('legend');
-const colors = [GOLD, GREEN, RED];
-
-datasets.forEach((ds, i) => {
-  const item = document.createElement('div');
-  item.className = 'legend-item';
-  item.innerHTML = `<div class="legend-dot" style="background:${colors[i]}"></div>${ds.label}`;
-  item.addEventListener('click', () => {
-    const meta = chart.getDatasetMeta(i);
-    meta.hidden = !meta.hidden;
-    item.classList.toggle('inactive', meta.hidden);
-    chart.update();
-  });
-  legendEl.appendChild(item);
-});
-</script>
+    });
+  </script>
 </body>
 </html>
